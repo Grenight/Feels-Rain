@@ -4,9 +4,10 @@ import time
 
 # Setup
 pygame.init()
-screen_wight = 1000
-screen_height = 600
-screen = pygame.display.set_mode((screen_wight, screen_height))
+wight = 480
+height = 640
+screen = pygame.display.set_mode((wight, height))
+pygame.display.set_caption('Rain')
 background = pygame.Surface(screen.get_size())
 
 
@@ -24,9 +25,9 @@ class Drop(object):
     def fall(self):
         self.y += self.y_speed
         self.y_speed += self.gravity / 10
-        if self.y > screen_height:
+        if self.y > height:
             self.y = random.randint(-100, 0)
-            self.x = random.randint(0, screen_wight)
+            self.x = random.randint(0, wight)
             self.y_speed = random.randint(3, 10)
 
     def show(self):
@@ -39,8 +40,9 @@ class Drop(object):
 
 # Creating rain drops
 all_drops = list()
+
 for i in range(250):
-    s_x = random.randint(0, screen_wight)
+    s_x = random.randint(0, wight)
     s_y = random.randint(-200, 0)
     s_speed = random.randint(3, 10)
     s_gravity = random.randint(0, 2)
