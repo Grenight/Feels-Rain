@@ -5,15 +5,21 @@ import time
 # Initialization
 pygame.init()
 
-# Fps of game
-FPS = 30
+# FPS of game
+FPS = 60
 
 # How many rain drops there is
-NUMBER_OF_DROPS = 400
+NUMBER_OF_DROPS = 800
 
 # Screen resolution
 WIGHT = 480
 HEIGHT = 640
+
+# Point list for ground
+point_list = [(0, HEIGHT - HEIGHT // 7),
+              (WIGHT, HEIGHT - HEIGHT // 7),
+              (WIGHT, HEIGHT),
+              (0, HEIGHT)]
 
 # Creating screen and setup
 screen = pygame.display.set_mode((WIGHT, HEIGHT))
@@ -62,19 +68,18 @@ class Drop(object):
         if self.y < self.surface:
             drop.fall()
             pygame.draw.line(background,
-                                 (138, 43, 226),
+                                 (141, 190, 214),
                                  (self.x, self.y),
                                  (self.x, self.y - 10),)
         else:
             self.splash()
 
     def splash(self):
-        """Todo: add splash when drop hit """
         if self.splash_frames > 0:
             self.splash_frames -= 1
             for drops in range(random.randint(3, 6)):
                 pygame.draw.line(background,
-                                    (138, 43, 226),
+                                    (141, 190, 214),
                                     (self.x, self.y),
                                     (self.x - random.randint(-8, 8),
                                      self.y - random.randint(0, 8)))
@@ -112,11 +117,13 @@ while loop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             loop = False
-    background.fill((230, 230, 250))
+    background.fill((60, 132, 167))
     background = background.convert()
     start = time.time()
+    pygame.draw.polygon(background, (106, 114, 113), point_list)
     for drop in all_drops:
         drop.draw()
+
     screen.blit(background, (0, 0))
     pygame.display.update()
     print(f'One cpu frame {round(time.time() - start, 5)}')
