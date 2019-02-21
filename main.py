@@ -41,7 +41,7 @@ class Drop(object):
 
     def reset(self):
         # Moving Drop to top of screen and randomizing starting parameters
-        self.y = 0
+        self.y = random.randint(-100, -20)
         self.x = random.randint(0, WIGHT)
         self.y_speed = random.randint(3, 5)
         self.surface = random.randint(HEIGHT - HEIGHT // 7, HEIGHT - HEIGHT // 20)
@@ -61,7 +61,7 @@ class Drop(object):
             pygame.draw.line(background,
                                  (138, 43, 226),
                                  (self.x, self.y),
-                                 (self.x, self.y + 10),)
+                                 (self.x, self.y - 10),)
         else:
             self.splash()
 
