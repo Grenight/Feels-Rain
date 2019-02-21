@@ -9,11 +9,11 @@ pygame.init()
 FPS = 60
 
 # How many rain drops there is
-NUMBER_OF_DROPS = 800
+NUMBER_OF_DROPS = 1400
 
 # Screen resolution
-WIGHT = 480
-HEIGHT = 640
+WIGHT = 1100
+HEIGHT = 650
 
 # Point list for ground
 point_list = [(0, HEIGHT - HEIGHT // 7),
@@ -45,18 +45,18 @@ class Drop(object):
         self.y_speed: float = y_speed
         self.gravity: float = gravity
         self.surface: int = surface
-        self.thickness = thickness
-        self.splash_frames = splash_frames
+        self.thickness: int = thickness
+        self.splash_frames: int = splash_frames
 
     def reset(self):
         # Moving Drop to top of screen and randomizing starting parameters
-        self.x = random.randint(0, WIGHT)
-        self.y = -20
-        self.y_speed = random.randint(3, 5)
-        self.surface = random.randint(HEIGHT - HEIGHT // 7, HEIGHT - HEIGHT // 20)
-        self.gravity = random.randint(0, 2)
-        self.thickness = random.randint(1, 2)
-        self.splash_frames = 5
+        self.x: float= random.randint(0, WIGHT)
+        self.y: float = -20
+        self.y_speed: float = random.randint(3, 5)
+        self.surface: int = random.randint(HEIGHT - HEIGHT // 7, HEIGHT - HEIGHT // 20)
+        self.gravity: float = random.randint(0, 2)
+        self.thickness: int = random.randint(1, 2)
+        self.splash_frames: int = 5
 
     def fall(self):
         # Moving drop down and increasing speed
@@ -119,7 +119,6 @@ while loop:
             loop = False
     background.fill((60, 132, 167))
     background = background.convert()
-    start = time.time()
     pygame.draw.polygon(background, (106, 114, 113), point_list)
     for drop in all_drops:
         drop.draw()
