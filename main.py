@@ -35,7 +35,7 @@ class Drop(object):
                          (138, 43, 226),
                          (self.x, self.y),
                          (self.x, self.y + 10))
-        screen.blit(background, (0, 0))
+
 
 
 # Creating rain drops
@@ -53,6 +53,7 @@ for i in range(250):
 # Main Game Loop
 loop = True
 while loop:
+    start = time.time()
     start_w = time.time()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -63,4 +64,6 @@ while loop:
     for drop in all_drops:
         drop.fall()
         drop.show()
+    screen.blit(background, (0, 0))
     pygame.display.flip()
+    print(f'One frame {round(time.time() - start, 5)}')
