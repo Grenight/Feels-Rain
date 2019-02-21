@@ -6,7 +6,10 @@ import time
 pygame.init()
 
 # Fps of game
-FPS = 20
+FPS = 30
+
+# How many rain drops there is
+NUMBER_OF_DROPS = 400
 
 # Screen resolution
 WIGHT = 480
@@ -41,8 +44,8 @@ class Drop(object):
 
     def reset(self):
         # Moving Drop to top of screen and randomizing starting parameters
-        self.y = random.randint(-100, -20)
         self.x = random.randint(0, WIGHT)
+        self.y = -20
         self.y_speed = random.randint(3, 5)
         self.surface = random.randint(HEIGHT - HEIGHT // 7, HEIGHT - HEIGHT // 20)
         self.gravity = random.randint(0, 2)
@@ -69,7 +72,7 @@ class Drop(object):
         """Todo: add splash when drop hit """
         if self.splash_frames > 0:
             self.splash_frames -= 1
-            for drops in range(5):
+            for drops in range(random.randint(3, 6)):
                 pygame.draw.line(background,
                                     (138, 43, 226),
                                     (self.x, self.y),
@@ -82,9 +85,9 @@ class Drop(object):
 # Creating rain drops
 all_drops = list()
 
-for i in range(300):
+for i in range(NUMBER_OF_DROPS):
     s_x = random.randint(0, WIGHT)
-    s_y = random.randint(-200, 0)
+    s_y = random.randint(-500, -20)
     s_speed = random.randint(3, 5)
     s_gravity = random.randint(0, 2)
     s_surface = random.randint(HEIGHT - HEIGHT // 7, HEIGHT - HEIGHT // 20)
@@ -96,7 +99,6 @@ for i in range(300):
                s_surface,
                s_thickness,
                s_splash_frames)
-
     all_drops.append(obj)
 
 
