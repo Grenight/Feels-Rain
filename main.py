@@ -9,11 +9,11 @@ pygame.init()
 FPS = 60
 
 # How many rain drops there is
-NUMBER_OF_DROPS = 1400
+NUMBER_OF_DROPS = 2800
 
 # Screen resolution
-WIGHT = 1100
-HEIGHT = 650
+WIGHT = 1280
+HEIGHT = 720
 
 # Point list for ground
 point_list = [(0, HEIGHT - HEIGHT // 7),
@@ -50,7 +50,7 @@ class Drop(object):
 
     def reset(self):
         # Moving Drop to top of screen and randomizing starting parameters
-        self.x: float= random.randint(0, WIGHT)
+        self.x: float = random.randint(0, WIGHT)
         self.y: float = -20
         self.y_speed: float = random.randint(3, 5)
         self.surface: int = random.randint(HEIGHT - HEIGHT // 7, HEIGHT - HEIGHT // 20)
@@ -65,24 +65,33 @@ class Drop(object):
 
     def draw(self):
         # Draw water drop of
+        self.mouse_interaction()
         if self.y < self.surface:
             drop.fall()
-            pygame.draw.line(background,
-                                 (141, 190, 214),
-                                 (self.x, self.y),
-                                 (self.x, self.y - 10),)
+            pygame.draw.line(
+                background,
+                (141, 190, 214),
+                (self.x, self.y),
+                (self.x, self.y - 10),)
         else:
             self.splash()
+
+    def mouse_interaction(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        if mouse_x < self.x < mouse_x + 10:
+                if mouse_y < self.y < mouse_y + 20:
+                    self.splash()
 
     def splash(self):
         if self.splash_frames > 0:
             self.splash_frames -= 1
             for drops in range(random.randint(3, 6)):
-                pygame.draw.line(background,
-                                    (141, 190, 214),
-                                    (self.x, self.y),
-                                    (self.x - random.randint(-8, 8),
-                                     self.y - random.randint(0, 8)))
+                pygame.draw.line(
+                    background,
+                    (141, 190, 214),
+                    (self.x, self.y),
+                    (self.x - random.randint(-8, 8),
+                     self.y - random.randint(0, 8)))
         else:
             self.reset()
 
