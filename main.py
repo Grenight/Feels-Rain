@@ -26,6 +26,9 @@ screen = pygame.display.set_mode((WIGHT, HEIGHT))
 pygame.display.set_caption('Rain')
 background = pygame.Surface(screen.get_size())
 
+# Wind settings
+wind = 0
+
 
 # Rain Drops class
 class Drop(object):
@@ -62,6 +65,11 @@ class Drop(object):
         # Moving drop down and increasing speed
         self.y += self.y_speed
         self.y_speed += self.gravity / 20
+        self.x += wind
+        if self.x < 0:
+            self.x = WIGHT
+        if self.x > WIGHT:
+            self.x = 0
 
     def draw(self):
         # Draw water drop of
@@ -72,7 +80,7 @@ class Drop(object):
                 background,
                 (141, 190, 214),
                 (self.x, self.y),
-                (self.x, self.y - 10),)
+                (self.x - wind, self.y - self.y_speed))
         else:
             self.splash()
 
@@ -90,8 +98,8 @@ class Drop(object):
                     background,
                     (141, 190, 214),
                     (self.x, self.y),
-                    (self.x - random.randint(-8, 8),
-                     self.y - random.randint(0, 8)))
+                    (self.x - random.randint(-8 - wind//2, 8 - wind),
+                     self.y - random.randint(0, int(self.y_speed)//2)))
         else:
             self.reset()
 
@@ -126,9 +134,15 @@ while loop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             loop = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                wind -= 1
+            if event.key == pygame.K_RIGHT:
+                wind += 1
     background.fill((60, 132, 167))
     background = background.convert()
     pygame.draw.polygon(background, (106, 114, 113), point_list)
+
     for drop in all_drops:
         drop.draw()
 
