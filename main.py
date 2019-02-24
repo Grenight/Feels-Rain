@@ -47,14 +47,11 @@ class MyDude(pygame.sprite.Sprite):
         # Call parent class (Sprite) constructor
         super().__init__()
 
-        # Pass in the color of the car, and its x and y position, width and height.
-        # Set the background color and set it to be transparent
         self.image = pygame.Surface([width, height])
         self.image.fill(WHITE)
         self.image.set_colorkey(WHITE)
         self.image = pygame.image.load("pepe.png").convert_alpha()
 
-        # Fetch the rectangle object that has the dimensions of the image.
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
 
