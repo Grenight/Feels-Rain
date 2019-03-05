@@ -26,8 +26,9 @@ screen = pygame.display.set_mode((WIGHT, HEIGHT))
 pygame.display.set_caption('Rain')
 background = pygame.Surface(screen.get_size())
 
-# WIND settings
-WIND = 0
+# WIND_X settings
+WIND_X = 0
+WIND_Y = 0
 WIND_MAX_SPD = 20
 
 # Mouse settings
@@ -85,9 +86,9 @@ class Drop(object):
 
     def fall(self):
         # Moving drop down and increasing speed
-        self.y += self.y_speed
+        self.y += self.y_speed + WIND_Y
         self.y_speed += self.gravity / 20
-        self.x += WIND
+        self.x += WIND_X
         if self.x < 0:
             self.x = WIGHT
         if self.x > WIGHT:
@@ -102,7 +103,7 @@ class Drop(object):
                 background,
                 (141, 190, 214),
                 (self.x, self.y),
-                (self.x - WIND, self.y - self.y_speed))
+                (self.x - WIND_X, self.y - self.y_speed))
         else:
             self.splash()
         if 50 < self.x < 250:
@@ -129,8 +130,8 @@ class Drop(object):
                     background,
                     (141, 190, 214),
                     (self.x, self.y),
-                    (self.x - random.randint(-8 - WIND // 1.5, 8 - WIND // 1.5),
-                     self.y - random.randint(0, int(self.y_speed)//2)))
+                    (self.x - random.randint(-8 - WIND_X // 1.5, 8 - WIND_X // 1.5),
+                     self.y - random.randint(0, int(self.y_speed + WIND_Y)//2)))
         else:
             self.reset()
 
@@ -167,12 +168,17 @@ while loop:
             loop = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                if WIND > -WIND_MAX_SPD:
-                    WIND -= 2
+                if WIND_X > -WIND_MAX_SPD:
+                    WIND_X -= 2
             if event.key == pygame.K_RIGHT:
-                if WIND < WIND_MAX_SPD:
-                    WIND += 2
-
+                if WIND_X < WIND_MAX_SPD // 2:
+                    WIND_X += 2
+            if event.key == pygame.K_UP:
+                if WIND_Y > 0:
+                    WIND_Y -= 2
+            if event.key == pygame.K_DOWN:
+                if WIND_Y < WIND_MAX_SPD // 2:
+                    WIND_Y += 2
     # Draw background and polygon
     background.fill((60, 132, 167))
     background = background.convert()
