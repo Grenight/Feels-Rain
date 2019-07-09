@@ -8,6 +8,11 @@ pygame.init()
 # FPS of game
 FPS = 30
 
+# Music Stuff
+
+pygame.mixer.music.load('sad.mp3')
+pygame.mixer.music.play(-1)
+
 # How many rain drops there is
 NUMBER_OF_DROPS = 600
 
