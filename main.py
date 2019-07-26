@@ -1,6 +1,16 @@
 import pygame
 import random
-import time
+from time import time
+
+
+def timer(func):
+    def timeit(*args, **kwargs):
+        before = time()
+        rv = func(*args, **kwargs)
+        print(f'{func.__name__}:  {time() - before}')
+        return rv
+    return timeit
+
 
 # Initialization
 pygame.init()
@@ -8,17 +18,17 @@ pygame.init()
 # FPS of game
 FPS = 30
 
-# Music Stuff
+# Playing sad music
 
 pygame.mixer.music.load('sad.mp3')
 pygame.mixer.music.play(-1)
 
 # How many rain drops there is
-NUMBER_OF_DROPS = 600
+NUMBER_OF_DROPS = 800
 
-# Screen resolution
-WIGHT = 600
-HEIGHT = 600
+# Window resolution
+WIGHT = 800
+HEIGHT = 800
 
 # Point list for drawing ground
 point_list = [(0, HEIGHT - HEIGHT // 7),
@@ -65,19 +75,19 @@ class MyDude(pygame.sprite.Sprite):
 # Rain Drops class
 class Drop(object):
 
+#    @timer
     def __init__(self,):
         # Initialization
         self.x: float = random.randint(0, WIGHT)
         self.y: float = random.randint(-HEIGHT, 0)
         self.y_speed: float = random.randint(3, 5)
         self.gravity: float = random.randint(0, 2)
-        self.surface: int = (random.randint
-                             (HEIGHT - HEIGHT // 7,
-                              HEIGHT - HEIGHT // 20))
+        self.surface: int = (random.randint(HEIGHT - HEIGHT // 7, HEIGHT - HEIGHT // 20))
         self.thickness: int = random.randint(1, 2)
         self.splash_frames: int = 0
         self.is_splash = True
 
+#    @timer
     def reset(self):
         # Moving Drop to top of screen and randomizing starting parameters
         self.x: float = random.randint(0, WIGHT)
@@ -89,6 +99,7 @@ class Drop(object):
         self.splash_frames: int = 5
         self.is_splash = True
 
+#    @timer
     def fall(self):
         # Moving drop down and increasing speed
         self.y += self.y_speed + WIND_Y
@@ -99,8 +110,9 @@ class Drop(object):
         if self.x > WIGHT:
             self.x = 0
 
+#    @timer
     def draw(self):
-        # Draw water drop of
+        # Draw water drop
         self.mouse_interaction()
         if self.y < self.surface:
             drop.fall()
@@ -115,18 +127,22 @@ class Drop(object):
             if HEIGHT - 250 < self.y < HEIGHT:
                 self.splash()
 
+#    @timer
     def mouse_interaction(self):
         # Splash if touch cursor
         if mouse_x < self.x < mouse_x + 10:
                 if mouse_y < self.y < mouse_y + 20:
                     self.splash()
 
+#    @timer
     def splash_size(self):
         if self.is_splash:
             self.is_splash = False
             self.splash_frames = self.y_speed // 3
 
+#    @timer
     def splash(self):
+        """Making splash by """
         self.splash_size()
         if self.splash_frames > 0:
             self.splash_frames -= 1
@@ -136,7 +152,7 @@ class Drop(object):
                     (141, 190, 214),
                     (self.x, self.y),
                     (self.x - random.randint(-8 - WIND_X // 1.5, 8 - WIND_X // 1.5),
-                     self.y - random.randint(0, int(self.y_speed + WIND_Y)//2)))
+                     self.y - random.randint(0, int(self.y_speed)//2)))
         else:
             self.reset()
 
@@ -163,9 +179,7 @@ loop = True
 clock = pygame.time.Clock()
 
 while loop:
-    start = time.time()
     mouse_x, mouse_y = pygame.mouse.get_pos()
-    pygame.display.update()
 
     # Process all keyboard events
     for event in pygame.event.get():
@@ -184,10 +198,12 @@ while loop:
             if event.key == pygame.K_DOWN:
                 if WIND_Y < WIND_MAX_SPD // 2:
                     WIND_Y += 2
+
     # Draw background and polygon
     background.fill((60, 132, 167))
     background = background.convert()
     pygame.draw.polygon(background, (106, 114, 113), point_list)
+    pygame.display.update()
 
     # Draw pepe
     all_sprites.update()
@@ -199,7 +215,5 @@ while loop:
 
     # Update screen
     screen.blit(background, (0, 0))
-
-    print(f'One cpu frame {round(time.time() - start, 4)}')
     clock.tick(FPS)
 
